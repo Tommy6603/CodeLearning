@@ -11,21 +11,57 @@ https://paiza.jp/works/mondai/c_rank_skillcheck_archive/search_history?language_
 履歴の先頭に W を追加する。
 
 検索ワード W が N 個与えられるので、N 個の検索ワードが与えられた後の履歴を表示するプログラムを書いてください。
-"""
 
+入力される値
+入力は以下のフォーマットで与えられます。
+
+N
+W_1
+W_2
+...
+W_N
+
+1 行目には検索ワードの数を表す整数 N が与えられます。
+続く N 行では検索ワード W_i が与えられます。
+続く N 行のうちの i 行目 (1 ≦ i ≦ N) には、検索ワード W_i が与えられます。検索ワード W_i は小文字のアルファベット a ~ z のみからなる文字列です。
+入力は合計 N + 1 行であり、 最終行の末尾に改行が 1 つ入ります。
+
+
+入力値最終行の末尾に改行が１つ入ります。
+文字列は標準入力から渡されます。
+
+期待する出力
+検索ワードを N 個入力した後の検索履歴を出力してください。
+出力の最後に改行を入れ、余計な文字、空行を含んではいけません。
+
+条件
+すべてのテストケースにおいて、以下の条件をみたします。
+
+1 ≦ N ≦ 100
+各 W_i (1 ≦ i ≦ N) に対して、W_iの文字数が20を超えない。
+"""
+import sys
 from collections import deque
 
-def manage_search_history(search_terms):
-    history = deque()  # 両端から要素を追加・削除できる。queやstackの実装に適している
+def update_search_history(history, term):
+    if term in history:
+        history.remove(term)
+    history.appendleft(term)
+
+def main():
+    input = sys.stdin.read #改行含めて入力可能。ctrl+Dでescape
+    data = input().split() #スペースタブ改行を区切り文字としてリストに分ける
+    
+    N = int(data[0])
+    search_terms = data[1:] #２つめの要素以降のリストを作成。スライス記法。
+    
+    history = deque() #deque型にする。両端から要素の追加削除ができる
+    
     for term in search_terms:
-        if term in history:
-            history.remove(term)  # 履歴に存在する場合は削除
-        history.appendleft(term)  # 履歴の最前面に追加(全てのwordに適用)
-    return list(history)
+        update_search_history(history, term)
+    
+    for term in history: #historyを順番に表示する
+        print(term)
 
-# 検索ワードのリスト（入力）
-search_terms = ["apple", "banana", "apple", "orange", "mango", "banana"]
-
-# 検索履歴を更新し、結果を表示
-updated_history = manage_search_history(search_terms)
-print("Updated search history:", updated_history)
+if __name__ == '__main__':
+    main()
