@@ -47,6 +47,7 @@ def update_search_history(history, term):
     if term in history:
         history.remove(term)
     history.appendleft(term)
+    #dequeは可変型なのでhistoryを戻す必要はない
 
 def main():
     input = sys.stdin.read #改行含めて入力可能。ctrl+Dでescape
