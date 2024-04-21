@@ -69,13 +69,13 @@ i ≠ i' なら d_i ≠ d_i'
 
 入力例
 3 6 7
-a #単語リスト
+a 
 aloha
 app
 az
 paiza
 warp
-app #しりとりログ
+app 
 paiza
 a
 aloha
@@ -130,6 +130,7 @@ index += M
 
 # ゲームの状態変数
 remaining_players = set(range(1, N + 1))
+#print(remaining_players)
 used_words = set()
 last_speaker = None
 last_char = None
