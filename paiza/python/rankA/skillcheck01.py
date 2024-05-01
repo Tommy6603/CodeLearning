@@ -44,22 +44,25 @@ def find_best_campaign_period():
     input = sys.stdin.read
     data = input().split()
     
-    n = int(data[0])  # 全日数
-    k = int(data[1])  # キャンペーンの日数
-    visitors = list(map(int, data[2:]))  # 各日の訪問者数のリスト
+    # data organization
+    n = int(data[0])  # whole days of running
+    k = int(data[1])  # How long campaign is(forget exact days)
+    visitors = list(map(int, data[2:]))  # visiters list for each day (type of list)
 
-    # スライディングウィンドウ法で k 日間の訪問者の合計を計算
-    current_sum = sum(visitors[:k])  # 最初の k 日間の合計
-    max_sum = current_sum  # 最大の訪問者数の合計
-    count = 1  # 最大合計が現れる回数
-    earliest_start = 1  # 最初の k 日間が最大なので、開始日は 1
+    # sum of visiters for k days(Sliding-window method)
+    # initialize of sliding-window
+    current_sum = sum(visitors[:k])  # initial sum during k days
+    max_sum = current_sum  # sum of maximum visitors
+    count = 1  # times to appear the maximum sum
+    earliest_start = 1  # sum of 0th and 1st day has already been culculated
 
+    # main part of sliding-window
     for i in range(k, n):
-        current_sum += visitors[i] - visitors[i - k]
-        if current_sum > max_sum:
+        current_sum += visitors[i] - visitors[i - k] # minus element of the furthest on the left
+        if current_sum > max_sum: #update
             max_sum = current_sum
-            count = 1
-            earliest_start = i - k + 2  # 新しい最大値の開始日 (1-indexed)
+            count = 1 # reset
+            earliest_start = i - k + 2  # starting date for the updated maximum one(1-indexed)
         elif current_sum == max_sum:
             count += 1
 
